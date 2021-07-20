@@ -357,7 +357,7 @@ trait HeaderReader: BufRead {
             Some((cur_enabled, Ok(byte)))
         });
 
-        for (_, byte) in mark_comments.filter(|ref e| e.0) {
+        for (_, byte) in mark_comments.filter(|e| e.0) {
             match byte {
                 Ok(b'\t') | Ok(b'\n') | Ok(b'\x0b') | Ok(b'\x0c') | Ok(b'\r') | Ok(b' ') => {
                     if !bytes.is_empty() {

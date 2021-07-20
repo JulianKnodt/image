@@ -367,7 +367,7 @@ impl ImageReadBuffer {
         // Finally, copy bytes into output buffer.
         let bytes_buffered = self.buffer.len() - self.consumed;
         if bytes_buffered > buf.len() {
-            crate::copy_memory(&self.buffer[self.consumed..][..buf.len()], &mut buf[..]);
+            crate::copy_memory(&self.buffer[self.consumed..][..buf.len()], &mut *buf);
             self.consumed += buf.len();
             Ok(buf.len())
         } else {

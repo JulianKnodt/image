@@ -24,12 +24,10 @@
 extern crate exr;
 use exr::prelude::*;
 
-use crate::{ImageDecoder, ImageResult, ColorType, Progress, ImageError, ImageFormat, ImageBuffer, Rgba, Rgb, ImageEncoder, ExtendedColorType};
-use std::io::{Write, Seek, BufRead, Cursor, BufReader};
-use crate::error::{DecodingError, ImageFormatHint, LimitError, LimitErrorKind, EncodingError};
+use crate::{ImageDecoder, ImageResult, ColorType, Progress, ImageError, ImageFormat, ImageEncoder, ExtendedColorType};
+use std::io::{Write, Seek, BufRead, Cursor};
+use crate::error::{DecodingError, ImageFormatHint, EncodingError};
 use crate::image::decoder_to_vec;
-use std::path::Path;
-use crate::buffer_::{Rgb32FImage, Rgba32FImage};
 use std::convert::TryInto;
 
 
@@ -74,7 +72,7 @@ impl<R: BufRead + Seek> OpenExrDecoder<R> {
         // read meta data, then wait for further instructions, keeping the file open and ready
         let exr_reader = exr::block::read(source, false).map_err(to_image_err)?;
 
-        let header_index = exr_reader.headers().into_iter()
+        let header_index = exr_reader.headers().iter()
             .position(|header|{
                 let has_rgb = ["R","G","B"].iter().all( // alpha will be optional
                     // check if r/g/b exists in the channels
